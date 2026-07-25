@@ -182,9 +182,29 @@
   .detail-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.7rem; margin-bottom: 1.5rem; }
   .detail-media-grid img, .detail-media-grid video {
     width: 100%; border-radius: 3px; border: 1px solid var(--line-soft); display: block; max-height: 220px; object-fit: cover;
+    transition: opacity 0.15s;
   }
+  .detail-media-grid img { cursor: zoom-in; }
+  .detail-media-grid img:hover { opacity: 0.85; }
   .detail-media-grid video { object-fit: contain; background: #000; }
   .detail-actions { display: flex; gap: 0.6rem; border-top: 1px solid var(--line-soft); padding-top: 1.2rem; }
+
+  /* LIGHTBOX */
+  .lightbox-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,11,13,0.92);
+    display: none; align-items: center; justify-content: center; z-index: 300; padding: 2rem; cursor: zoom-out;
+  }
+  .lightbox-overlay.open { display: flex; }
+  .lightbox-overlay img {
+    max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 2px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+  .lightbox-close {
+    position: fixed; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; border-radius: 3px; width: 36px; height: 36px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem; cursor: pointer;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.18); }
 
   .toast {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -207,9 +227,12 @@
 <div class="wrapper">
 
   <div class="top-bar">
-    <button class="btn" onclick="toggleTheme()">
-      <span id="themeIcon">●</span><span id="themeLabel">Dark mode</span>
-    </button>
+    <div style="display:flex; align-items:center; gap:0.6rem;">
+      <a class="btn" href="resume.html">← Back to resume</a>
+      <button class="btn" onclick="toggleTheme()">
+        <span id="themeIcon">●</span><span id="themeLabel">Dark mode</span>
+      </button>
+    </div>
     <div class="actions">
       <button class="btn" onclick="triggerImport()">Import backup</button>
       <input type="file" id="importInput" accept="application/json" style="display:none" onchange="importBackup(event)">
@@ -278,8 +301,7 @@
         <div class="media-preview-list" id="mediaPreviewList"></div>
       </div>
       <div class="form-actions">
-        <button type="button" class="btn danger" id="deleteBtn" style="display:none;" onclick="deleteCurrentWork()">Delete work</button>
-        <div class="form-actions-right">
+        <div class="form-actions-right" style="margin-left:auto;">
           <button type="button" class="btn" onclick="closeModal('formModal')">Cancel</button>
           <button type="submit" class="btn primary">Save work</button>
         </div>
@@ -300,9 +322,14 @@
     <div class="detail-media-grid" id="dMedia"></div>
     <div class="detail-actions">
       <button class="btn" onclick="editFromDetail()">Edit</button>
-      <button class="btn danger" onclick="deleteFromDetail()">Delete</button>
     </div>
   </div>
+</div>
+
+<!-- LIGHTBOX (zoomed photo view) -->
+<div class="lightbox-overlay" id="lightboxModal" onclick="closeModal('lightboxModal')">
+  <button class="lightbox-close" onclick="event.stopPropagation(); closeModal('lightboxModal')">✕</button>
+  <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <div class="toast" id="toast"></div>
@@ -362,7 +389,6 @@
     document.getElementById('workForm').reset();
     currentMedia = [];
     document.getElementById('editId').value = '';
-    document.getElementById('deleteBtn').style.display = 'none';
     document.getElementById('formTitle').textContent = 'Add a work';
     if (existing) {
       document.getElementById('editId').value = existing.id;
@@ -373,7 +399,6 @@
       document.getElementById('wTags').value = (existing.tags||[]).join(', ');
       currentMedia = existing.media ? [...existing.media] : [];
       document.getElementById('formTitle').textContent = 'Edit work';
-      document.getElementById('deleteBtn').style.display = 'inline-flex';
     }
     renderMediaPreview();
     document.getElementById('formModal').classList.add('open');
@@ -436,17 +461,6 @@
     showToast('Work saved');
   }
 
-  function deleteCurrentWork() {
-    const id = document.getElementById('editId').value;
-    if (!id) return;
-    if (!confirm('Delete this work? This cannot be undone.')) return;
-    let works = loadWorks().filter(w => w.id !== id);
-    saveWorks(works);
-    closeModal('formModal');
-    renderGrid();
-    showToast('Work deleted');
-  }
-
   /* ---- Detail modal ---- */
   function openDetail(id) {
     const w = loadWorks().find(x => x.id === id);
@@ -458,8 +472,10 @@
     document.getElementById('dDesc').textContent = w.desc || '';
     document.getElementById('dTags').innerHTML = (w.tags||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join('');
     const mediaGrid = document.getElementById('dMedia');
-    mediaGrid.innerHTML = (w.media||[]).map(m =>
-      m.type === 'video' ? `<video src="${m.data}" controls></video>` : `<img src="${m.data}">`
+    mediaGrid.innerHTML = (w.media||[]).map((m, i) =>
+      m.type === 'video'
+        ? `<video src="${m.data}" controls onclick="event.stopPropagation()"></video>`
+        : `<img src="${m.data}" onclick="openLightbox(${i})">`
     ).join('') || `<div class="field-hint">No photos or videos added yet.</div>`;
     document.getElementById('detailModal').classList.add('open');
   }
@@ -468,13 +484,15 @@
     closeModal('detailModal');
     openForm(w);
   }
-  function deleteFromDetail() {
-    if (!confirm('Delete this work? This cannot be undone.')) return;
-    let works = loadWorks().filter(w => w.id !== currentDetailId);
-    saveWorks(works);
-    closeModal('detailModal');
-    renderGrid();
-    showToast('Work deleted');
+
+  /* ---- Lightbox (click a photo to zoom) ---- */
+  function openLightbox(mediaIndex) {
+    const w = loadWorks().find(x => x.id === currentDetailId);
+    if (!w) return;
+    const m = (w.media || [])[mediaIndex];
+    if (!m || m.type === 'video') return;
+    document.getElementById('lightboxImg').src = m.data;
+    document.getElementById('lightboxModal').classList.add('open');
   }
 
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
