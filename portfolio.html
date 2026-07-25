@@ -228,16 +228,14 @@
 
   <div class="top-bar">
     <div style="display:flex; align-items:center; gap:0.6rem;">
-      <a class="btn" href="index.html">← Back to resume</a>
+      <a class="btn" href="index.html">Back</a>
       <button class="btn" onclick="toggleTheme()">
         <span id="themeIcon">●</span><span id="themeLabel">Dark mode</span>
       </button>
     </div>
     <div class="actions">
-      <button class="btn" onclick="triggerImport()">Import backup</button>
       <input type="file" id="importInput" accept="application/json" style="display:none" onchange="importBackup(event)">
-      <button class="btn" onclick="exportBackup()">Export backup</button>
-      <button class="btn primary" onclick="openForm()">+ Add work</button>
+      <button class="btn primary" onclick="openForm()">+</button>
     </div>
   </div>
 
