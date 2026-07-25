@@ -228,15 +228,16 @@
 
   <div class="top-bar">
     <div style="display:flex; align-items:center; gap:0.6rem;">
-      <a class="btn" href="index.html">← Back to resume</a>
+      <a class="btn" href="resume.html">← Back to resume</a>
       <button class="btn" onclick="toggleTheme()">
         <span id="themeIcon">●</span><span id="themeLabel">Dark mode</span>
       </button>
     </div>
-    <div class="actions">
+    <div class="actions" id="ownerActions" style="display:none;">
       <button class="btn" onclick="triggerImport()">Import backup</button>
       <input type="file" id="importInput" accept="application/json" style="display:none" onchange="importBackup(event)">
       <button class="btn" onclick="exportBackup()">Export backup</button>
+      <button class="btn" onclick="lockOwnerMode()">Lock</button>
       <button class="btn primary" onclick="openForm()">+ Add work</button>
     </div>
   </div>
@@ -252,7 +253,10 @@
     <div class="grid" id="grid"></div>
     <div class="empty-state" id="emptyState" style="display:none;">No works yet — click "+ Add work" to add your first project, with photos or video.</div>
 
-    <div class="footer">Godfred Angelo C. Bendicio · Information Technology · Bacolod City · godfredbendicio@gmail.com</div>
+    <div class="footer">
+      Godfred Angelo C. Bendicio · Information Technology · Bacolod City · godfredbendicio@gmail.com
+      <span id="ownerUnlockDot" onclick="promptOwnerUnlock()" style="cursor:pointer; opacity:0.35; margin-left:0.5rem;">·</span>
+    </div>
   </div>
 </div>
 
@@ -320,7 +324,7 @@
     <div class="detail-desc" id="dDesc"></div>
     <div class="detail-tags" id="dTags"></div>
     <div class="detail-media-grid" id="dMedia"></div>
-    <div class="detail-actions">
+    <div class="detail-actions" id="detailActions" style="display:none;">
       <button class="btn" onclick="editFromDetail()">Edit</button>
     </div>
   </div>
@@ -336,6 +340,9 @@
 
 <script>
   const STORAGE_KEY = 'portfolio_works_v2';
+  const OWNER_KEY = 'portfolio_owner_v1';
+  // Change this to whatever passphrase you want to use to unlock editing.
+  const OWNER_PASSWORD = 'bendicio2026';
   let currentMedia = []; // {type:'image'|'video', data: base64}
   let currentDetailId = null;
 
@@ -540,6 +547,35 @@
     document.getElementById('themeLabel').textContent = isLight ? 'Light mode' : 'Dark mode';
   }
 
+  function isOwner() { return localStorage.getItem(OWNER_KEY) === 'true'; }
+
+  function applyOwnerMode() {
+    const owner = isOwner();
+    document.getElementById('ownerActions').style.display = owner ? 'flex' : 'none';
+    document.getElementById('detailActions').style.display = owner ? 'flex' : 'none';
+  }
+
+  function promptOwnerUnlock() {
+    if (isOwner()) return;
+    const entered = prompt('Enter passphrase to enable editing:');
+    if (entered === null) return;
+    if (entered === OWNER_PASSWORD) {
+      localStorage.setItem(OWNER_KEY, 'true');
+      applyOwnerMode();
+      showToast('Editing unlocked');
+    } else {
+      showToast('Incorrect passphrase');
+    }
+  }
+
+  function lockOwnerMode() {
+    localStorage.removeItem(OWNER_KEY);
+    applyOwnerMode();
+    closeModal('detailModal');
+    showToast('Editing locked');
+  }
+
+  applyOwnerMode();
   renderGrid();
 </script>
 </body>
