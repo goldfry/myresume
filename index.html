@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Godfred Angelo C. Bendicio — IT Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --paper: #fffefb;
+    --ink: #20242b;
+    --ink-soft: #4a5260;
+    --muted: #848d99;
+    --line: #ddd9cf;
+    --line-soft: #e8e5dc;
+    --accent: #2c5f5a;
+    --accent-soft: #e3ebe8;
+    --tag-bg: #f0eee6;
+    --gold: #a8783c;
+  }
+  [data-theme="dark"] {
+    --bg: #15171a;
+    --paper: #1b1d21;
+    --ink: #eceae4;
+    --ink-soft: #b7b9bd;
+    --muted: #7d8189;
+    --line: #33363b;
+    --line-soft: #2a2c30;
+    --accent: #6fb3a8;
+    --accent-soft: #20302d;
+    --tag-bg: #232529;
+    --gold: #cb9f63;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .sheet {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 3.5rem 4rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+
+  /* ── TOGGLE / ACTIONS BAR ── */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .actions { display: flex; gap: 0.6rem; }
+  .action-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .action-btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .action-btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+  .toggle-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.45rem 0.8rem;
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── HEADER ── */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+    padding-bottom: 1.75rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .name {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .title-badge {
+    display: inline-block;
+    margin-top: 0.55rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .title-badge::before { content: '— '; color: var(--muted); }
+  .contact-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    margin-top: 1rem;
+  }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  a.chip:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .header-mark {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .header-mark-img {
+  width: 180px;
+  height: 180px;
+  border: 2px solid var(--ink);
+  object-fit: cover; /* Ensures the image fills the square without distortion */
+  flex-shrink: 0;
+}
+
+  /* ── SECTIONS ── */
+  section { margin-bottom: 2.1rem; }
+  section:last-of-type { margin-bottom: 0; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .section-label .num { color: var(--gold); }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── OBJECTIVE ── */
+  .objective-card {
+    border-left: 2px solid var(--accent);
+    padding: 0.2rem 0 0.2rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .objective-card.collapsed p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .read-more {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--accent);
+    margin-top: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── EXPERIENCE CARDS ── */
+  .exp-card {
+    padding: 0 0 1.4rem 0;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .exp-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .exp-title { font-weight: 600; font-size: 0.98rem; color: var(--ink); }
+  .exp-org {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin-top: 0.2rem;
+  }
+  .exp-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+  .exp-bullets { list-style: none; padding: 0; }
+  .exp-bullets li {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    padding: 0.22rem 0;
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  .exp-bullets li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  /* ── SKILLS GRID ── */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .skill-tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 0.32rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+  }
+  .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── TOOLS ── */
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .tool-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 0.4rem 0.75rem;
+    transition: all 0.2s;
+  }
+  .tool-item:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── EDUCATION ── */
+  .edu-card {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    align-items: start;
+  }
+  .edu-card:last-child { border-bottom: none; }
+  .edu-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    padding-top: 0.2rem;
+    width: 28px;
+  }
+  .edu-degree { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+  .edu-school { font-size: 0.8rem; color: var(--accent); font-family: 'IBM Plex Mono', monospace; margin-top: 0.15rem; }
+  .edu-honors { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .honor-badge {
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 0.12rem 0.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── CERTS ── */
+  .cert-list { display: flex; flex-direction: column; }
+  .cert-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .cert-item:last-child { border-bottom: none; }
+  .cert-icon { color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; flex-shrink: 0; }
+
+  /* ── SEMINARS ── */
+  .seminar-list { display: flex; flex-direction: column; }
+  .seminar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .seminar-item:last-child { border-bottom: none; }
+  .seminar-name { font-size: 0.84rem; color: var(--ink-soft); }
+  .seminar-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── COMMUNITY ── */
+  .community-card {
+    border-left: 2px solid var(--gold);
+    padding: 0.2rem 0 0.2rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .community-card .ctitle { font-weight: 600; color: var(--ink); }
+  .community-card .cdate {
+    font-size: 0.74rem; color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace; margin-top: 0.2rem;
+  }
+
+  /* ── PROGRESS BAR SKILLS ── */
+  .qual-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .qual-header { display: flex; justify-content: space-between; margin-bottom: 0.35rem; font-size: 0.84rem; }
+  .qual-header span:first-child { color: var(--ink-soft); }
+  .qual-header span:last-child { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--accent); }
+  .qual-bar { height: 3px; background: var(--line-soft); border-radius: 0; overflow: hidden; }
+  .qual-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 2.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .top-bar { display: none; }
+    .sheet { border: none; box-shadow: none; padding: 0; }
+    .wrapper { padding: 0; }
+    .exp-card, .edu-card, .cert-item, .seminar-item { break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 1.5rem 1rem 3rem; }
+    .sheet { padding: 2rem 1.5rem; }
+    .header { grid-template-columns: 1fr; }
+    .header-mark { display: none; }
+    .exp-header { flex-direction: column; gap: 0.2rem; }
+    .seminar-item { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+    .top-bar { flex-direction: column; gap: 0.75rem; align-items: stretch; }
+    .actions { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="top-bar">
+    <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn">
+      <span id="themeIcon">●</span><span id="themeLabel">Dark mode</span>
+    </button>
+    <div class="actions">
+      <a class="action-btn" href="portfolio.html">Portfolio</a>
+      <button class="action-btn" onclick="copyEmail()">Copy email</button>
+      <button class="action-btn primary" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <div class="sheet">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <div class="name">Godfred Angelo<br>C. Bendicio</div>
+        <div class="title-badge">Information Technology</div>
+        <div class="contact-chips">
+          <span class="chip">Bacolod City, Negros Occidental 6100</span>
+          <a class="chip" href="tel:+639524893637">+63 952 489 3637</a>
+          <a class="chip" href="mailto:godfredbendicio@gmail.com">godfredbendicio@gmail.com</a>
+        </div>
+      </div>
+      <img src="formal.jpg" alt="Profile" class="header-mark-img">
+    </div>
+
+    <!-- OBJECTIVE -->
+    <section>
+      <div class="section-label"><span class="num">01</span> Objective</div>
+      <div class="objective-card collapsed" id="objCard" onclick="toggleObj()">
+        <p id="objText">Seeking a position in the Information Technology field where I can apply my creativity, technical knowledge, and attention to detail in developing efficient and user-friendly digital solutions. With a solid foundation in design principles and web technologies, and experience using Figma, PHP, HTML, CSS, and SQL, as well as basic knowledge in networking and network troubleshooting, I aim to contribute to the development of innovative websites, systems, and digital solutions that enhance user experience and support organizational goals. I also have practical IT support experience, including basic network setup, software installation and system updates, PC troubleshooting and maintenance, and printer and peripheral setup, enabling me to help maintain efficient and reliable computer systems. I aspire to grow within a dynamic organization that values innovation, collaboration, and continuous learning, while further strengthening my skills in web development, database management, UI/UX design, networking, and modern IT technologies.</p>
+        <div class="read-more" id="readMoreLabel">Read more ↓</div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section>
+      <div class="section-label"><span class="num">02</span> Experience</div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">General Admin Virtual Assistant Trainee</div>
+            <div class="exp-org">Pathcutters PH</div>
+          </div>
+          <div class="exp-date">Trainee</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Communicated professionally with Australian clients through chat, email, and virtual meetings.</li>
+          <li>Performed accurate data entry, record management, and database updates while maintaining data integrity and confidentiality.</li>
+          <li>Utilized Microsoft Office applications — Excel, Word, Outlook, PowerPoint — to support daily administrative and reporting tasks.</li>
+          <li>Managed and organized spreadsheets, documents, and client information for efficient workflow and accessibility.</li>
+          <li>Participated in English communication drills and workplace communication training.</li>
+          <li>Engaged in impromptu speaking exercises and mock client interactions to improve confidence and critical thinking.</li>
+          <li>Demonstrated strong attention to detail, time management, adaptability, and problem-solving skills in a remote environment.</li>
+          <li>Developed customer service, active listening, and cross-cultural communication skills with international clients.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">MICTS Intern</div>
+            <div class="exp-org">New Government Center — Bacolod City</div>
+          </div>
+          <div class="exp-date">2026</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Gained practical experience applying academic knowledge to real-world IT tasks and projects.</li>
+          <li>Assisted in developing a payroll system for government employees using PHP and MySQL database.</li>
+          <li>Collected, organized, and accurately entered data into database systems.</li>
+          <li>Developed strong time management, communication, and teamwork skills through hands-on work.</li>
+          <li>Analyzed technical problems and collaborated with the team to create effective solutions.</li>
+          <li>Prepared project documentation, reports, and presentations for senior staff.</li>
+          <li>Explored new technologies and tools to improve workflow and streamline processes.</li>
+          <li>Delivered technical support by troubleshooting issues and improving user experience.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-label"><span class="num">03</span> Core skills</div>
+      <div class="skills-grid">
+        <div class="skill-tag">Project Management</div>
+        <div class="skill-tag">Web & Graphics Design</div>
+        <div class="skill-tag">Computer Networking</div>
+        <div class="skill-tag">Word Processing</div>
+        <div class="skill-tag">Digital Marketing</div>
+        <div class="skill-tag">Database Management</div>
+        <div class="skill-tag">Researching</div>
+        <div class="skill-tag">Data Entry</div>
+        <div class="skill-tag">UI/UX Design</div>
+        <div class="skill-tag">Network Troubleshooting</div>
+        <div class="skill-tag">IT Support</div>
+        <div class="skill-tag">PC Maintenance</div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section>
+      <div class="section-label"><span class="num">04</span> Tools & technologies</div>
+      <div class="tools-grid">
+        <div class="tool-item">MS Word</div>
+        <div class="tool-item">MS Excel</div>
+        <div class="tool-item">MS PowerPoint</div>
+        <div class="tool-item">MS Outlook</div>
+        <div class="tool-item">MS Teams</div>
+        <div class="tool-item">MS OneNote</div>
+        <div class="tool-item">MS OneDrive</div>
+        <div class="tool-item">Trello</div>
+        <div class="tool-item">Adobe Photoshop</div>
+        <div class="tool-item">Figma</div>
+        <div class="tool-item">Canva</div>
+        <div class="tool-item">PHP / MySQL</div>
+        <div class="tool-item">HTML / CSS</div>
+        <div class="tool-item">SQL</div>
+      </div>
+    </section>
+
+    <!-- QUALIFICATIONS -->
+    <section>
+      <div class="section-label"><span class="num">05</span> Key qualifications</div>
+      <div class="qual-list" id="qualList">
+        <div class="qual-item">
+          <div class="qual-header"><span>Client Communication (AU Clients)</span><span>Advanced</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="88"></div></div>
+        </div>
+        <div class="qual-item">
+          <div class="qual-header"><span>Web Development (PHP, HTML, CSS)</span><span>Proficient</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="80"></div></div>
+        </div>
+        <div class="qual-item">
+          <div class="qual-header"><span>Database Management (MySQL/SQL)</span><span>Proficient</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="78"></div></div>
+        </div>
+        <div class="qual-item">
+          <div class="qual-header"><span>UI/UX Design (Figma, Photoshop)</span><span>Proficient</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="82"></div></div>
+        </div>
+        <div class="qual-item">
+          <div class="qual-header"><span>Networking & IT Support</span><span>Intermediate</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="72"></div></div>
+        </div>
+        <div class="qual-item">
+          <div class="qual-header"><span>Microsoft Office Suite</span><span>Advanced</span></div>
+          <div class="qual-bar"><div class="qual-fill" data-width="90"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="section-label"><span class="num">06</span> Academic background</div>
+      <div class="edu-card">
+        <div class="edu-mark">'26</div>
+        <div>
+          <div class="edu-degree">Bachelor of Science in Information Technology</div>
+          <div class="edu-school">University of St. La Salle</div>
+          <div class="edu-honors">
+            <span class="honor-badge">Dean's Lister 2022–2026</span>
+            <span class="honor-badge">Academic Achievement 2026</span>
+            <span class="honor-badge">PH Startup Challenge 8 — Qualifying Team 2023</span>
+          </div>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-mark">SHS</div>
+        <div>
+          <div class="edu-degree">Senior High School — STEM</div>
+          <div class="edu-school">Liceo De La Salle University</div>
+          <div class="edu-honors"><span class="honor-badge">With Honor</span></div>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-mark">K–10</div>
+        <div>
+          <div class="edu-degree">Primary & Secondary Education</div>
+          <div class="edu-school">University of St. La Salle — Integrated School</div>
+          <div class="edu-honors"><span class="honor-badge">Achievement Awardee</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section>
+      <div class="section-label"><span class="num">07</span> Certifications</div>
+      <div class="cert-list">
+        <div class="cert-item"><span class="cert-icon">▢</span>CCNA: Networking Basics</div>
+        <div class="cert-item"><span class="cert-icon">▢</span>CCNA: Switching, Routing, and Wireless Essentials</div>
+        <div class="cert-item"><span class="cert-icon">▢</span>CCNA: Switching, Routing, and Wireless Essentials — One Take Passer (June 2025)</div>
+        <div class="cert-item"><span class="cert-icon">▢</span>CCNA: IT Customer Support Basics</div>
+        <div class="cert-item"><span class="cert-icon">▢</span>Internship — Payroll System Development for NGC Employees (2026)</div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section>
+      <div class="section-label"><span class="num">08</span> Community involvement & achievements</div>
+      <div class="community-card">
+        <div class="ctitle">Rotaract Metro Sugarbowl Champions</div>
+        <div class="cdate">2025–2026</div>
+      </div>
+    </section>
+
+    <!-- SEMINARS -->
+    <section>
+      <div class="section-label"><span class="num">09</span> Seminars & workshops</div>
+      <div class="seminar-list">
+        <div class="seminar-item"><span class="seminar-name">Google Devfest</span><span class="seminar-date">Oct 21, 2023</span></div>
+        <div class="seminar-item"><span class="seminar-name">AI and Beyond</span><span class="seminar-date">Feb 26, 2025</span></div>
+        <div class="seminar-item"><span class="seminar-name">The Human Firewall: Strengthening Cybersecurity Through Awareness</span><span class="seminar-date">May 16, 2025</span></div>
+        <div class="seminar-item"><span class="seminar-name">Cybersecurity for National Security</span><span class="seminar-date">Aug 20, 2025</span></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Godfred Angelo C. Bendicio · Information Technology · Bacolod City · godfredbendicio@gmail.com
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isLight = html.getAttribute('data-theme') === 'light';
+    html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    document.getElementById('themeLabel').textContent = isLight ? 'Light mode' : 'Dark mode';
+  }
+
+  let objExpanded = false;
+  function toggleObj() {
+    objExpanded = !objExpanded;
+    const card = document.getElementById('objCard');
+    const label = document.getElementById('readMoreLabel');
+    card.classList.toggle('collapsed', !objExpanded);
+    label.textContent = objExpanded ? 'Collapse ↑' : 'Read more ↓';
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.qual-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-width') + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(document.getElementById('qualList'));
+
+  function copyEmail() {
+    navigator.clipboard.writeText('godfredbendicio@gmail.com').then(() => {
+      const btn = document.querySelectorAll('.action-btn')[1];
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = orig, 1800);
+    });
+  }
+</script>
+</body>
+</html>
