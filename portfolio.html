@@ -39,8 +39,7 @@
   .btn:hover { border-color: var(--accent); color: var(--accent); }
   .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
   .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
-  .btn.danger { border-color: var(--danger); color: var(--danger); }
-  .btn.danger:hover { background: var(--danger); border-color: var(--danger); color: var(--paper); }
+  .btn.danger:hover { border-color: var(--danger); color: var(--danger); }
 
   .sheet {
     background: var(--paper); border: 1px solid var(--line); border-radius: 2px;
@@ -234,7 +233,10 @@
         <span id="themeIcon"></span><span id="themeLabel">Dark mode</span>
       </button>
     </div>
-    
+    <div class="actions">
+      <input type="file" id="importInput" accept="application/json" style="display:none" onchange="importBackup(event)">
+      <button class="btn primary" onclick="openForm()"></button>
+    </div>
   </div>
 
   <div class="sheet">
@@ -318,7 +320,6 @@
     <div class="detail-media-grid" id="dMedia"></div>
     <div class="detail-actions">
       <button class="btn" onclick="editFromDetail()">Edit</button>
-      <button class="btn danger" onclick="deleteFromDetail()">Delete</button>
     </div>
   </div>
 </div>
@@ -480,18 +481,6 @@
     const w = loadWorks().find(x => x.id === currentDetailId);
     closeModal('detailModal');
     openForm(w);
-  }
-
-  function deleteFromDetail() {
-    const works = loadWorks();
-    const w = works.find(x => x.id === currentDetailId);
-    if (!w) return;
-    if (!confirm(`Delete "${w.name}"? This can't be undone.`)) return;
-    const updated = works.filter(x => x.id !== currentDetailId);
-    saveWorks(updated);
-    closeModal('detailModal');
-    renderGrid();
-    showToast('Work deleted');
   }
 
   /* ---- Lightbox (click a photo to zoom) ---- */
