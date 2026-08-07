@@ -251,7 +251,58 @@
 </div>
 
 <!-- ADD/EDIT FORM MODAL -->
-
+<div class="modal-overlay" id="formModal" onclick="closeOnOverlay(event,'formModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('formModal')">✕</button>
+    <div class="modal-title" id="formTitle">+</div>
+    <form id="workForm" onsubmit="saveWork(event)">
+      <input type="hidden" id="editId">
+      <div class="field">
+        <label for="wName">Project name</label>
+        <input type="text" id="wName" required placeholder="e.g. NGC Employee Payroll System">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="wStatus">Status</label>
+          <select id="wStatus">
+            <option>Completed</option>
+            <option>Ongoing</option>
+            <option>Internship</option>
+            <option>School project</option>
+            <option>Personal project</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="wDate">Date / period</label>
+          <input type="text" id="wDate" placeholder="e.g. 2026">
+        </div>
+      </div>
+      <div class="field">
+        <label for="wDesc">Description</label>
+        <textarea id="wDesc" rows="4" placeholder="What is it, what did you do, what tools did you use?"></textarea>
+      </div>
+      <div class="field">
+        <label for="wTags">Tags <span style="text-transform:none; color:var(--muted);">(comma separated)</span></label>
+        <input type="text" id="wTags" placeholder="e.g. PHP, MySQL, Figma">
+      </div>
+      <div class="field">
+        <label>Photos &amp; videos</label>
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('mediaInput').click()">
+          Click to choose files, or drag &amp; drop images / videos here
+          <input type="file" id="mediaInput" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
+        </div>
+        <div class="field-hint">Stored locally in this browser. Keep individual videos short (under ~20MB) so the page stays fast to load.</div>
+        <div class="media-preview-list" id="mediaPreviewList"></div>
+      </div>
+      <div class="form-actions">
+        <div class="form-actions-right" style="margin-left:auto;">
+          <button type="button" class="btn" onclick="closeModal('formModal')">Cancel</button>
+          <button type="submit" class="btn primary">Save work</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- DETAIL VIEW MODAL -->
 <div class="modal-overlay" id="detailModal" onclick="closeOnOverlay(event,'detailModal')">
